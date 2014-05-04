@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv='Content-type' content='text/html; charset=utf-8'>
     <title>Tic Tac Toe</title>
     <link rel="stylesheet" href="css/tic-tac-toe.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.0/backbone-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/react/0.10.0/react.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/react/0.10.0/JSXTransformer.js"></script>
+    <script type="text/jsx" src="js/views/row.jsx.js"></script>
+    <script type="text/jsx" src="js/views/board.jsx.js"></script>
     <script type="text/javascript">
         var TicTacToe = TicTacToe || {};
     </script>
@@ -22,10 +26,9 @@
     <script src="js/tests/tests.js"></script>
 </head>
 <body>
-<div class="tic-tac-toe">
-    <table></table>
+<div id="tic-tac-toe">
+    <div id="board"></div>
     <button id="playComputer">Play Computer</button>
-    <button id="saveBoard">Save Board</button>
 </div>
 </body>
 </html>

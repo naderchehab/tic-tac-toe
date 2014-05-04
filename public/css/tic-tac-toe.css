@@ -1,5 +1,5 @@
 
-.tic-tac-toe td {
+#tic-tac-toe td {
     border: solid #343434 1px;
     width: 100px;
     height: 100px;

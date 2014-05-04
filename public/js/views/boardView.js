@@ -1,8 +1,12 @@
+/**
+ * @jsx React.DOM
+ */
+
 $(function () {
     "use strict";
 
     TicTacToe.BoardView = Backbone.View.extend({
-        el: $(".tic-tac-toe"),
+        el: $("#tic-tac-toe"),
         initialize: function () {
             _.bindAll(this, "render", "markCell", "playComputer");
             this.render();
@@ -13,21 +17,6 @@ $(function () {
             "click #saveBoard": "saveBoard"
         },
         render: function () {
-            var boardWidth = this.model.get("boardWidth");
-            var i;
-
-            for (i = 0; i < boardWidth; i++) {
-                this.$el.find("table").append("<tr />");
-            }
-
-            for (i = 0; i < boardWidth; i++) {
-                this.$el.find("table tr").append("<td />");
-            }
-
-            $.each(this.$el.find("table td"), function (i, e) {
-                $(e).attr("id", "cell" + Math.pow(2, i));
-            });
-
             return this; // for chainable calls, like .render().el
         },
         markCell: function (e) {
