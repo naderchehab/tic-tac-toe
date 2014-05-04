@@ -7,9 +7,23 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.0/backbone-min.js"></script>
-    <script src="js/tic-tac-toe.js"></script>
+    <script type="text/javascript">
+        var TicTacToe = TicTacToe || {};
+    </script>
+    <script src="js/utils.js"></script>
+    <script src="js/aiStrategies/randomStrategy.js"></script>
+    <script src="js/aiStrategies/miniMaxStrategy.js"></script>
+    <script src="js/aiStrategies/strategies.js"></script>
+    <script src="js/models/boardModel.js"></script>
+    <script src="js/views/boardView.js"></script>
+    <script src="js/index.js"></script>
+    <script src="js/tests/tests.js"></script>
 </head>
 <body>
-    <table class="board"></table>
+<div class="tic-tac-toe">
+    <table></table>
+    <button id="playComputer">Play Computer</button>
+    <button id="saveBoard">Save Board</button>
+</div>
 </body>
 </html>
