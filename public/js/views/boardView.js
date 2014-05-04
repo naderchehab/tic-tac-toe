@@ -56,8 +56,7 @@ $(function () {
         playComputer: function() {
             console.log("Computer playing...");
             var model = this.model;
-            var legalMoves = TicTacToe.Utils.getLegalMoves(model.get("xMarks"), model.get("oMarks"), model.get("boardWidth"));
-            var cellNumber = this.model.get("strategy").getMove(legalMoves, model.get("xMarks"), model.get("oMarks"), model.get("boardWidth"), model.get("winnerPatterns"), model.get("currentPlayer"));
+            var cellNumber = this.model.get("strategy").getMove(model.get("xMarks"), model.get("oMarks"), model.get("boardWidth"), model.get("winnerPatterns"), model.get("currentPlayer"));
             model.set(model.get("currentPlayer") + "Marks", model.get(model.get("currentPlayer") + "Marks") | cellNumber);
             this.$el.find("#cell" + cellNumber).append(model.get("currentPlayer").toUpperCase());
 

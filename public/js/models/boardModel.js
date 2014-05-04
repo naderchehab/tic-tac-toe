@@ -3,7 +3,7 @@ $(function () {
 
     TicTacToe.Board = Backbone.Model.extend({
         defaults: {
-            strategy: TicTacToe.Strategies["MiniMaxStrategy"],  // The strategy that the computer will use to play
+            strategy: TicTacToe.Strategies["AlphaBetaStrategy"],  // The strategy that the computer will use to play
             oMarks: 0,
             xMarks: 0,
             boardWidth: 3,

@@ -20,7 +20,7 @@ TicTacToe.Utils = function () {
         checkWin: function(winnerPatterns, xMarks, oMarks) {
             var isWin = false;
 
-            $.each(winnerPatterns, function (index, value) {
+            _.each(winnerPatterns, function (value) {
                 var winnerPattern = parseInt(value, 2);
                 if ((winnerPattern & xMarks) == winnerPattern || (winnerPattern & oMarks) == winnerPattern) {
                     isWin = true;
@@ -32,11 +32,11 @@ TicTacToe.Utils = function () {
         isTerminal: function(winnerPatterns, xMarks, oMarks, boardWidth) {
             return this.getLegalMoves(xMarks, oMarks, boardWidth).length == 0 || this.checkWin(winnerPatterns, xMarks, oMarks);
         },
-        getTerminalScore: function (xMarks, oMarks, isMe, winnerPatterns, depth) {
+        getTerminalScore: function (xMarks, oMarks, isMax, winnerPatterns, depth) {
             var isWin = this.checkWin(winnerPatterns, xMarks, oMarks);
 
             if (isWin) {
-                return isMe ? 10 - depth : depth - 10;
+                return isMax ? depth - 100 : 100 - depth;
             }
 
             return 0;
