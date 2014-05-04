@@ -1,7 +1,7 @@
 $(function () {
     "use strict";
 
-    TicTacToe.MiniMaxStrategy = function () {
+    TicTacToe.BoundedMiniMaxStrategy = function () {
 
         var getScore = function (move, xMarks, oMarks, currentPlayer, isMe, boardWidth, winnerPatterns, depth) {
 
@@ -20,26 +20,33 @@ $(function () {
                 var legalMoves = TicTacToe.Utils.getLegalMoves(xMarks, oMarks, boardWidth);
 
                 if (isMe) {
-                    var bestScore = -100;
+                    var bestScore = -100, i;
 
-                    _.each(legalMoves, function (value) {
-                        bestScore = Math.max(bestScore, getScore(value, xMarks, oMarks, currentPlayer == "x" ? "o" : "x", false, boardWidth, winnerPatterns, depth + 1));
-                    });
+                    for (i = 0; i < legalMoves.length; i++) {
+                        bestScore = Math.max(bestScore, getScore(legalMoves[i], xMarks, oMarks, currentPlayer == "x" ? "o" : "x", false, boardWidth, winnerPatterns, depth + 1));
+
+                        if (bestScore == 100) {
+                            break;
+                        }
+                    }
                     return bestScore;
                 }
                 else {
                     var worstScore = 100;
 
-                    _.each(legalMoves, function (value) {
-                        worstScore = Math.min(worstScore, getScore(value, xMarks, oMarks, currentPlayer == "x" ? "o" : "x", true, boardWidth, winnerPatterns, depth + 1));
-                    });
+                    for (i = 0; i < legalMoves.length; i++) {
+                        worstScore = Math.min(legalMoves[i], getScore(value, xMarks, oMarks, currentPlayer == "x" ? "o" : "x", true, boardWidth, winnerPatterns, depth + 1));
+
+                        if (worstScore == -100) {
+                            break;
+                        }
+                    }
                     return worstScore;
                 }
             }
         };
 
         return {
-            getScore: getScore,
             getMove: function (legalMoves, xMarks, oMarks, boardWidth, winnerPatterns, currentPlayer) {
                 var bestScore = -100, bestMove = 0;
 

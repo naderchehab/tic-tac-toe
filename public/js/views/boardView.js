@@ -14,12 +14,13 @@ $(function () {
         },
         render: function () {
             var boardWidth = this.model.get("boardWidth");
+            var i;
 
-            for (var i = 0; i < boardWidth; i++) {
+            for (i = 0; i < boardWidth; i++) {
                 this.$el.find("table").append("<tr />");
             }
 
-            for (var i = 0; i < boardWidth; i++) {
+            for (i = 0; i < boardWidth; i++) {
                 this.$el.find("table tr").append("<td />");
             }
 
@@ -50,7 +51,6 @@ $(function () {
                 model.set("currentPlayer", model.get("currentPlayer") == "x" ? "o" : "x");
 
                 this.playComputer();
-
             }
         },
         playComputer: function() {
