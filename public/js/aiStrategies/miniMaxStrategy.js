@@ -3,6 +3,23 @@ $(function () {
 
     TicTacToe.MiniMaxStrategy = function () {
 
+        var getMove = function (xMarks, oMarks, boardWidth, winnerPatterns, currentPlayer) {
+            var bestScore = -100, bestMove = 0;
+
+            var legalMoves = TicTacToe.Utils.getLegalMoves(xMarks, oMarks, boardWidth);
+
+            _.each(legalMoves, function (value) {
+                var score = getScore(value, xMarks, oMarks, currentPlayer, false, boardWidth, winnerPatterns, 0);
+
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestMove = value;
+                }
+            });
+
+            return bestMove;
+        }
+
         var getScore = function (move, xMarks, oMarks, currentPlayer, isMax, boardWidth, winnerPatterns, depth) {
 
             if (currentPlayer == "x") {
@@ -40,24 +57,7 @@ $(function () {
         };
 
         return {
-            getScore: getScore,
-            getMove: function (xMarks, oMarks, boardWidth, winnerPatterns, currentPlayer) {
-                var bestScore = -100, bestMove = 0;
-
-                var legalMoves = TicTacToe.Utils.getLegalMoves(xMarks, oMarks, boardWidth);
-
-                _.each(legalMoves, function (value) {
-                    var score = getScore(value, xMarks, oMarks, currentPlayer, false, boardWidth, winnerPatterns, 0);
-                    console.log("Score: ", score);
-
-                    if (score > bestScore) {
-                        bestScore = score;
-                        bestMove = value;
-                    }
-                });
-
-                return bestMove;
-            }
+            getMove: getMove
         }
     }();
 });

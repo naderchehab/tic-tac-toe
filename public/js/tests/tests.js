@@ -1,3 +1,4 @@
+/*
 $(function () {
 
     var board = new TicTacToe.Board();
@@ -19,3 +20,4 @@ $(function () {
     score = TicTacToe.MiniMaxStrategy.getScore(move, board.get("xMarks"), board.get("oMarks"), board.get("currentPlayer"), true, board.get("boardWidth"), board.get("winnerPatterns"), 0);
     console.log("128:", score);
 });
+*/

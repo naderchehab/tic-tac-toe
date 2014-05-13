@@ -1,8 +1,8 @@
 /**
  * @jsx React.DOM
  */
-var Board = React.createClass({
-    render: function() {
+Boggle = React.createClass({
+    render: function () {
         var rows = [];
 
         for (var i = 0; i < this.props.boardWidth; i++) {
@@ -18,6 +18,6 @@ var Board = React.createClass({
 });
 
 React.renderComponent(
-    <Board boardWidth={3} />,
+    <Boggle boardWidth={3} />,
     document.getElementById('board')
 );
