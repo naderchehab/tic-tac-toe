@@ -1,68 +1,91 @@
-$(function () {
-    "use strict";
+"use strict";
 
-    TicTacToe.AlphaBetaStrategy = function () {
+TicTacToe.AlphaBetaStrategy = function () {
 
-        var getScore = function (move, xMarks, oMarks, currentPlayer, isMax, boardWidth, winnerPatterns, depth, alpha, beta) {
+    var getTerminalScore = function (model, isMax, depth) {
+        console.assert(typeof model === "object");
+        console.assert(typeof isMax === "boolean");
+        console.assert(typeof depth === "number");
 
-            if (currentPlayer == "x") {
-                xMarks = xMarks | move;
-            }
-            else {
-                oMarks = oMarks | move;
-            }
+        var isWin = model.checkWin();
 
-            if (TicTacToe.Utils.isTerminal(winnerPatterns, xMarks, oMarks, boardWidth)) {
-                return TicTacToe.Utils.getTerminalScore(xMarks, oMarks, isMax, winnerPatterns, depth);
-            }
-            else {
+        if (isWin) {
+            return isMax ? depth - 100 : 100 - depth;
+        }
 
-                var legalMoves = TicTacToe.Utils.getLegalMoves(xMarks, oMarks, boardWidth);
-                currentPlayer = currentPlayer == "x" ? "o" : "x";
+        return 0;
+    }
 
-                if (isMax) {
-                    var i;
+    var getScore = function (move, modeli, isMax, depth, alpha, beta) {
 
-                    for (i = 0; i < legalMoves.length; i++) {
-                        alpha = Math.max(alpha, getScore(legalMoves[i], xMarks, oMarks, currentPlayer, false, boardWidth, winnerPatterns, depth + 1, alpha, beta));
+        var legalMoves;
+        var i;
 
-                        if (alpha > beta) {
-                            break;
-                        }
-                    }
-                    return alpha;
+        console.assert(typeof move === "number");
+        console.assert(typeof modeli === "object");
+        console.assert(typeof isMax === "boolean");
+        console.assert(typeof depth === "number");
+        console.assert(typeof alpha === "number");
+        console.assert(typeof beta === "number");
+
+        var model = modeli.clone();
+
+        if (model.get("currentPlayer") === "x") {
+            model.set("xMarks", model.get("xMarks") | move);
+        }
+        else {
+            model.set("oMarks", model.get("oMarks") | move);
+        }
+
+        if (model.isTerminal()) {
+            return getTerminalScore(model, isMax, depth);
+        }
+
+        model.nextPlayer();
+        legalMoves = model.getLegalMoves();
+
+        if (isMax) {
+            for (i = 0; i < legalMoves.length; i++) {
+                alpha = Math.max(alpha, getScore(legalMoves[i], model, false, depth + 1, alpha, beta));
+
+                if (alpha > beta) {
+                    break;
                 }
-                else {
-                    for (i = 0; i < legalMoves.length; i++) {
-                        beta = Math.min(beta, getScore(legalMoves[i], xMarks, oMarks, currentPlayer, true, boardWidth, winnerPatterns, depth + 1, alpha, beta));
-
-                        if (alpha > beta) {
-                            break;
-                        }
-                    }
-                    return beta;
-                }
             }
-        };
+            return alpha;
+        }
 
-        return {
-            getScore: getScore,
-            getMove: function (xMarks, oMarks, boardWidth, winnerPatterns, currentPlayer) {
-                var bestScore = -100, bestMove = 0;
+        for (i = 0; i < legalMoves.length; i++) {
+            beta = Math.min(beta, getScore(legalMoves[i], model, true, depth + 1, alpha, beta));
 
-                var legalMoves = TicTacToe.Utils.getLegalMoves(xMarks, oMarks, boardWidth);
-
-                _.each(legalMoves, function (value) {
-                    var score = getScore(value, xMarks, oMarks, currentPlayer, false, boardWidth, winnerPatterns, 0, -1000, 1000);
-
-                    if (score > bestScore) {
-                        bestScore = score;
-                        bestMove = value;
-                    }
-                });
-
-                return bestMove;
+            if (alpha > beta) {
+                break;
             }
         }
-    }();
-});
+        return beta;
+    };
+
+    var getMove = function (model) {
+        var bestScore = -100, bestMove = 0, legalMoves;
+
+        console.assert(typeof model === "object");
+
+        legalMoves = model.getLegalMoves();
+
+        _.each(legalMoves, function (move) {
+            var score = getScore(move, model, false, 0, -1000, 1000);
+
+            if (score > bestScore) {
+                bestScore = score;
+                bestMove = move;
+            }
+        });
+
+        return bestMove;
+    }
+
+    return {
+        getMove: getMove,
+        getScore: getScore
+    }
+}();

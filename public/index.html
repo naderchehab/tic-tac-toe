@@ -4,32 +4,35 @@
     <meta http-equiv='Content-type' content='text/html; charset=utf-8'>
     <title>Tic Tac Toe</title>
     <link rel="stylesheet" href="css/tic-tac-toe.css">
+</head>
+<body>
+<div id="tic-tac-toe">
+    <div id="board"></div>
+    <button id="trainComputer">Train Computer</button>
+    <button id="playComputer">Play Computer</button>
+</div>
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.6.1/lodash.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.0/backbone-min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/react/0.10.0/react.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/react/0.10.0/JSXTransformer.js"></script>
     <script type="text/javascript">
         var TicTacToe = TicTacToe || {};
     </script>
-    <script src="js/utils.js"></script>
+    <script src="js/constants.js"></script>
     <script src="js/aiStrategies/randomStrategy.js"></script>
     <script src="js/aiStrategies/miniMaxStrategy.js"></script>
     <script src="js/aiStrategies/boundedMiniMaxStrategy.js"></script>
     <script src="js/aiStrategies/alphaBetaStrategy.js"></script>
     <script src="js/aiStrategies/monteCarloStrategy.js"></script>
+    <script src="js/aiStrategies/reinforcementLearningStrategy.js"></script>
     <script src="js/aiStrategies/strategies.js"></script>
     <script src="js/models/boardModel.js"></script>
     <script type="text/jsx" src="js/views/row.js"></script>
     <script type="text/jsx" src="js/views/board.js"></script>
     <script src="js/views/boardView.js"></script>
-    <script src="js/index.js"></script>
     <script src="js/tests/tests.js"></script>
-</head>
-<body>
-<div id="tic-tac-toe">
-    <div id="board"></div>
-    <button id="playComputer">Play Computer</button>
-</div>
+
 </body>
 </html>

@@ -1,0 +1,14 @@
+{
+    "env": {
+        "browser": true,
+        "jquery": true,
+    },
+    "globals": {
+        "TicTacToe": true,
+        "_": true,
+        "Backbone": true
+    },
+	"ecmaFeatures": {
+        "jsx": true
+    }
+}

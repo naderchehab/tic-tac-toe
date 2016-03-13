@@ -1,13 +1,12 @@
-$(function () {
-    "use strict";
+"use strict";
 
-    TicTacToe.RandomStrategy = function () {
+TicTacToe.RandomStrategy = function () {
 
-        return {
-            getMove: function (legalMoves) {
-                var rand = Math.floor(Math.random() * legalMoves.length);
-                return legalMoves[rand];
-            }
+    return {
+        getMove: function (model) {
+            var legalMoves = model.getLegalMoves();
+            var move = _.sample(legalMoves);
+            return move;
         }
-    }();
-});
+    }
+}();

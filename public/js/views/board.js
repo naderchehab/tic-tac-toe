@@ -1,7 +1,7 @@
 /**
  * @jsx React.DOM
  */
-Boggle = React.createClass({
+Board = React.createClass({
     render: function () {
         var rows = [];
 
@@ -13,11 +13,15 @@ Boggle = React.createClass({
             <table>
                 {rows}
             </table>
-            );
+        );
+    },
+    componentDidMount: function() {
+        var board = new TicTacToe.Board();
+        var boardView = new TicTacToe.BoardView({model: board});
     }
 });
 
 React.renderComponent(
-    <Boggle boardWidth={3} />,
+    <Board boardWidth={TicTacToe.Constants.boardWidth}/>,
     document.getElementById('board')
 );
