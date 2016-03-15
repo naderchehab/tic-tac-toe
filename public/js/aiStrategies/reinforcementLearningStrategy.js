@@ -1,8 +1,11 @@
 TicTacToe.ReinforcementLearningStrategy = function () {
 
     var states = JSON.parse(localStorage.getItem("tic-tac-toe-states")) || {};
-    var STEP_SIZE = 0.1;
-    var numTrainingGames = 50000;
+    var STEP_SIZE = 0.8;
+    var numTrainingGames = 100000;
+    var explorationRatio = 0.4;
+    var debug = false;
+    var previousState;
 
     function getMove(model) {
         var legalMoves = model.getLegalMoves();
@@ -23,14 +26,16 @@ TicTacToe.ReinforcementLearningStrategy = function () {
             oMarks = tmpModel.get("oMarks");
             state = xMarks + "-" + oMarks;
             nextStates.push(state);
-            console.log(state, states[state]);
+            if (debug) {
+                console.log(state, states[state]);
+            }
         });
 
         if (model.get("currentPlayer") === "x") {
-            bestState = _.maxBy(nextStates, function(s) { return states[s]; });
+            bestState = _.maxBy(nextStates, function(s) { return (states[s] && states[s].value) || 0; });
         }
         else {
-            bestState = _.minBy(nextStates, function(s) { return states[s]; });   
+            bestState = _.minBy(nextStates, function(s) { return (states[s] && states[s].value) || 0; });   
         }
         
         if (!bestState) {
@@ -47,12 +52,18 @@ TicTacToe.ReinforcementLearningStrategy = function () {
         }
         move = nextState - model.get(model.get("currentPlayer") + "Marks");
 
-        console.log(move);
+        if (debug) {
+            console.log(move);
+        }
 
         return move;
     }
 
     function train(model) {
+
+        debug = false;
+
+        states = {};
 
         for (var i = 0; i < numTrainingGames; i++) {
             _playOneGame(model);
@@ -66,17 +77,16 @@ TicTacToe.ReinforcementLearningStrategy = function () {
 
     function _playOneGame(model) {
         model.clear();
-        var stateHistory = [];
 
-        for (var i = 0; i < 9; i++) {
+        while (model.get("gameEnded") === false) {
             _play(model);
-            _recordState(model, stateHistory);
+            _recordState(model);
             model.nextPlayer();
         }
     }
 
     function _play(model) {
-        var isExploration = Math.random() > 0.5;
+        var isExploration = Math.random() < explorationRatio;
         var cellNumber = getMove(model);
 
         if (!cellNumber || isExploration) {
@@ -86,27 +96,35 @@ TicTacToe.ReinforcementLearningStrategy = function () {
         model.markCell(cellNumber);
     }
 
-    function _recordState(model, stateHistory) {
+    function _recordState(model) {
         var xMarks = model.get("xMarks");
         var oMarks = model.get("oMarks");
         var currentPlayer = model.get("currentPlayer");
         var currentState =  xMarks + "-" + oMarks;
-        var previousState;
+        states[currentState] = states[currentState] || {visits: 0, value: 0};
 
         if (model.checkWin()) {
-            states[currentState] = currentPlayer === "x" ? 1 : -1;
-
-            // TD
-            while (stateHistory.length > 0) {
-                previousState = stateHistory.pop();
-                states[previousState] += STEP_SIZE * (states[currentState] - states[previousState]);
-                currentState = previousState;
+            if (currentPlayer === "x") {
+                states[currentState].value = 100;
+            }
+            else {
+                states[currentState].value = -100;
             }
         }
+
+        // Temporal Difference (TD) Learning
+        if (previousState) {
+            states[previousState].visits++;
+            states[previousState].value = states[previousState].value + (STEP_SIZE/states[previousState].visits) * (states[currentState].value - states[previousState].value);
+        }
+        
+        if (model.getLegalMoves().length === 0) {
+            model.set("gameEnded", true);
+            previousState = undefined;
+        }
         else {
-            states[currentState] = states[currentState] ? states[currentState] : 0;
-            stateHistory.push(currentState);
-        }       
+            previousState = currentState;
+        }
     }
 
     return {
